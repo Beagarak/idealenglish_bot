@@ -2,6 +2,7 @@
 import telebot
 from glob import glob
 from random import choice
+
 bot = telebot.TeleBot('1601838792:AAFCSBGDVasuRk10nWDZYcZ9nz5noB-GqtM')
 
 
@@ -10,7 +11,7 @@ def get_text_messages(message):
     if message.text.lower() == 'яблоко':
         bot.send_message(message.from_user.id, 'Apple')
         bot.send_photo(chat_id=message.chat.id, photo='https://www.healthbenefitstimes.com/9/gallery/apple-1/Half'
-                                                       '-cut-apple.jpg')
+                                                      '-cut-apple.jpg')
     else:
         bot.send_message(message.from_user.id, 'Напишите "яблоко"!')
 
