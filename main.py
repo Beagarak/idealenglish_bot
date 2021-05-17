@@ -1,4 +1,6 @@
 import telebot
+
+import buttons_v2
 from settings import TG_TOKEN
 import trans_alg
 import buttons
@@ -12,9 +14,10 @@ def show_main_menu(message):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.add_word)
-def add_word_function(call):
+def add_word_function(call=buttons.add_word):
     bot.send_message(call.from_user.id,
                      'Можешь добавить свои слова! (в разработке)')
+    buttons_v2.LocalButtons(call)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.learn_words)
@@ -31,7 +34,7 @@ def check_knowledge_function(call):
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.statistic)
-def statistic_function(call):
+def statistic_function(call=buttons.translate):
     bot.send_message(call.from_user.id, 'Вот твоя статистика: (в разработке)')
 
 
@@ -39,6 +42,7 @@ def statistic_function(call):
 def translator_function(call):
     bot.send_message(call.from_user.id,
                      'Введи слово, которое хочешь перевести:')
+    new_keyboard_translator = buttons_v2.LocalButtons(call)
 
     @bot.message_handler(content_types=['text'])
     def translate(message):
