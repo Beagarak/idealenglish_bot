@@ -1,6 +1,5 @@
 import telebot
 
-import buttons_v2
 from settings import TG_TOKEN
 import trans_alg
 import buttons
@@ -17,13 +16,18 @@ def show_main_menu(message):
 def add_word_function(call=buttons.add_word):
     bot.send_message(call.from_user.id,
                      'Можешь добавить свои слова! (в разработке)')
-    buttons_v2.LocalButtons(call)
+    buttons.LocalButtons(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text='')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.learn_words)
 def learn_word_function(call):
     bot.send_message(call.from_user.id,
                      'Давай поучим новые слова! (в разработке)')
+    buttons.LocalButtonsLearning(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text='')
 
 
 @bot.callback_query_handler(
@@ -31,18 +35,22 @@ def learn_word_function(call):
 def check_knowledge_function(call):
     bot.send_message(call.from_user.id,
                      'Пора проверить твои знания (в разработке)')
+    buttons.LocalButtonsChecking(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text='')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.statistic)
 def statistic_function(call=buttons.translate):
     bot.send_message(call.from_user.id, 'Вот твоя статистика: (в разработке)')
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text='')
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.translate)
 def translator_function(call):
     bot.send_message(call.from_user.id,
                      'Введи слово, которое хочешь перевести:')
-    new_keyboard_translator = buttons_v2.LocalButtons(call)
 
     @bot.message_handler(content_types=['text'])
     def translate(message):
@@ -51,8 +59,10 @@ def translator_function(call):
         bot.send_message(message.from_user.id, translation)
         bot.send_photo(chat_id=message.chat.id,
                        photo=trans_alg.get_picture(translation))
-        bot.send_message(call.from_user.id, text='Выберите:',
-                         reply_markup=new_keyboard_translator)
+        buttons.LocalButtons(call).creating_keyboard(call)
+
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text='')
 
 
 @bot.callback_query_handler(
@@ -60,6 +70,8 @@ def translator_function(call):
 def add_word_function(call):
     bot.send_message(call.from_user.id, 'Чуи, мы дома')
     show_main_menu(call)
+    bot.answer_callback_query(callback_query_id=call.id,
+                              text='')
 
 
 bot.polling(none_stop=True, interval=0)
