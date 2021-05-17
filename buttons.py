@@ -2,20 +2,32 @@ import telebot
 from settings import TG_TOKEN
 
 bot = telebot.TeleBot(TG_TOKEN)
-add_word_button = '|Добавить слова|'
-learn_words_button = '|Учить слова|'
-check_knowledge_button = '|Проверка знаний|'
-statistic_button = '|Статистика|'
-translate_button = '|Переводчик|'
+
+add_word = '|Добавить слова|'
+learn_words = '|Учить слова|'
+check_knowledge = '|Проверка знаний|'
+statistic = '|Статистика|'
+translate = '|Переводчик|'
+approve = '|Добавить|'
+reject = '|Отказаться|'
+exit_to_main_menu = '|Выход в главное меню|'
 
 
-
-@bot.message_handler(commands=['start'])
+@bot.message_handler(content_types='text')
 def main_menu(message):
-    user_markup = telebot.types.ReplyKeyboardMarkup()
-    user_markup.row(add_word_button)
-    user_markup.row(learn_words_button)
-    user_markup.row(check_knowledge_button)
-    user_markup.row(statistic_button, translate_button)
-    bot.send_message(message.from_user.id, 'Добро пожаловать',
+    user_markup = telebot.types.InlineKeyboardMarkup()
+    add_word_button = telebot.types.InlineKeyboardButton(text=add_word,
+                                                         callback_data=add_word)
+    learn_words_button = telebot.types.InlineKeyboardButton(text=learn_words,
+                                                            callback_data=learn_words)
+    check_knowledge_button = telebot.types.InlineKeyboardButton(
+        text=check_knowledge, callback_data=check_knowledge)
+    statistic_button = telebot.types.InlineKeyboardButton(text=statistic,
+                                                          callback_data=statistic)
+    translate_button = telebot.types.InlineKeyboardButton(text=translate,
+                                                          callback_data=translate)
+    user_markup.add(add_word_button, learn_words_button)
+    user_markup.add(check_knowledge_button)
+    user_markup.add(statistic_button, translate_button)
+    bot.send_message(message.from_user.id, 'Выберите действие',
                      reply_markup=user_markup)
