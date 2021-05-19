@@ -3,7 +3,8 @@ import telebot
 from settings import TG_TOKEN
 import trans_alg
 import buttons
-import bd
+# import bd
+import basic_functions
 
 ## создаем экземпляр бота
 bot = telebot.TeleBot(TG_TOKEN)
@@ -52,8 +53,7 @@ def check_knowledge_function(call):
     bot.send_message(call.from_user.id,
                      'Пора проверить твои знания (в разработке)')
     buttons.LocalButtonsChecking(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Статистика"
@@ -63,8 +63,7 @@ def check_knowledge_function(call):
 @bot.callback_query_handler(func=lambda call: call.data == buttons.statistic)
 def statistic_function(call=buttons.translate):
     bot.send_message(call.from_user.id, 'Вот твоя статистика: (в разработке)')
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Переводчик"
@@ -81,21 +80,10 @@ def translator_function(call):
     #  @param:  [in] message Строка, которую отправил пользователь для перевода.
     #  @retval: Бот отправляет в чат перевод и картинку к этому переводу
     @bot.message_handler(content_types=['text'])
-    def translate(message):
-        type_of_lang = int(ord(message.text[0]))
-        log_words = trans_alg.get_translate(type_of_lang, message.text)
-        translation = log_words[2]
-        log_words.pop(2)
-        bot.send_message(message.from_user.id, translation)
-        bot.send_photo(chat_id=message.chat.id,
-                       photo=trans_alg.get_picture(translation))
-        buttons.LocalButtons(call).creating_keyboard(call)
-        log_user_id = message.chat.id
-        log_theme = "default"
-        bd.add_to_db_from_translator(log_words, log_theme, log_user_id)
+    def translate_in_realtime(message):
+        trans_alg.translation_function(message)
 
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Выход в главное меню"
@@ -113,12 +101,14 @@ def add_word_function(call):
 ## Обработка нажатия на кнопку "Добавить", в режиме переводчика
 #
 #  Отправляет пользователю клавиатуру для Выбора темы
-@bot.callback_query_handler(
-    func=lambda call: call.data == buttons.approve)
+@bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
 def choose_theme_menu(call):
     buttons.ThemeButtons(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+    @bot.callback_query_handler(func=lambda call: True)
+    def themes_function(call):
+        basic_functions.choose_your_theme(call)
 
 
 bot.polling(none_stop=True, interval=0)
