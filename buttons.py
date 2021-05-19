@@ -59,8 +59,29 @@ class LocalButtonsChecking(LocalButtons):
         self.new_keyboard = telebot.types.InlineKeyboardMarkup()
         self.new_keyboard.add(self.guess_translate_button)
         self.new_keyboard.add(self.eng_rus_button, self.rus_eng_button)
-        self.new_keyboard.add(self.write_translate_button, self.easy_translate_button)
+        self.new_keyboard.add(self.write_translate_button,
+                              self.easy_translate_button)
         self.new_keyboard.add(self.exit_button)
+
+
+
+class ThemeButtons(LocalButtons):
+    def __init__(self, call):
+        super().__init__(call)
+        self.no_theme_button = telebot.types.InlineKeyboardButton(
+            text=no_theme,
+            callback_data=no_theme)
+        self.choose_theme_adding_button = telebot.types.InlineKeyboardButton(
+            text=choose_theme_adding,
+            callback_data=choose_theme_adding)
+        self.own_theme_button = telebot.types.InlineKeyboardButton(
+            text=own_theme,
+            callback_data=own_theme)
+        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
+        self.bot = telebot.TeleBot(TG_TOKEN)
+        self.new_keyboard.add(self.no_theme_button)
+        self.new_keyboard.add(self.choose_theme_adding_button)
+        self.new_keyboard.add(self.own_theme_button)
 
 
 add_word = '|Добавить слова|'
@@ -72,12 +93,15 @@ approve = '|Добавить|'
 reject = '|Отказаться|'
 exit_to_main_menu = '|Выход в главное меню|'
 next_word = '|Следующее слово|'
-choose_theme = '|Выбрать тему|'
+choose_theme_learning = '|Выбери тему|'
 guess_translate = '|Верный ли перевод?|'
 eng_rus = '|Викторина(англ-рус)|'
 rus_eng = '|Викторина(рус-англ)|'
 write_translate = '|Напиши перевод|'
 easy_translate = '|Угадай перевод по буквам|'
+no_theme = '|Без темы|'
+choose_theme_adding = '|Выбрать тему|'
+own_theme = '|Новая тема|'
 
 
 @bot.message_handler(content_types='text')

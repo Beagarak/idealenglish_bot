@@ -76,7 +76,7 @@ cursor = db.cursor()
 # добавление одной строки в бд
 
 
-def add_to_db(words, theme, user_id):
+def add_to_db_from_translator(words, theme, user_id):
     eng_word = words[0]
     rus_word = words[1]
     sql = "INSERT INTO words (eng_word, rus_word, theme, user_id) VALUES (%s, %s, %s, %s)"
