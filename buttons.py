@@ -31,8 +31,8 @@ class LocalButtonsLearning(LocalButtons):
             text=next_word,
             callback_data=next_word)
         self.choose_theme_button = telebot.types.InlineKeyboardButton(
-            text=choose_theme,
-            callback_data=choose_theme)
+            text=choose_theme_learning,
+            callback_data=choose_theme_learning)
         self.new_keyboard = telebot.types.InlineKeyboardMarkup()
         self.new_keyboard.add(self.next_word_button, self.choose_theme_button)
         self.new_keyboard.add(self.exit_button)
