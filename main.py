@@ -3,7 +3,7 @@ import telebot
 from settings import TG_TOKEN
 import trans_alg
 import buttons
-# import bd
+import bd
 import basic_functions
 
 ## создаем экземпляр бота
@@ -23,11 +23,10 @@ def show_main_menu(message):
 #  Функция отправляет уведомление о переходе в режим "Добавить слова".
 @bot.callback_query_handler(func=lambda call: call.data == buttons.add_word)
 def add_word_function(call=buttons.add_word):
-    bot.send_message(call.from_user.id,
-                     'Можешь добавить свои слова! (в разработке)')
+    inform = 'Добавь слова в формате: Английское слово - Русский перевод'
+    bot.send_message(call.from_user.id, inform)
     buttons.LocalButtons(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Учить слова"
@@ -36,11 +35,10 @@ def add_word_function(call=buttons.add_word):
 #  Отправляет пользователю клавиатуру, для работы в режиме "Учить слова"
 @bot.callback_query_handler(func=lambda call: call.data == buttons.learn_words)
 def learn_word_function(call):
-    bot.send_message(call.from_user.id,
-                     'Давай поучим новые слова! (в разработке)')
+    inform = 'Давай поучим новые слова! (в разработке)'
+    bot.send_message(call.from_user.id, inform)
     buttons.LocalButtonsLearning(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Проверить знания"
@@ -50,8 +48,8 @@ def learn_word_function(call):
 @bot.callback_query_handler(
     func=lambda call: call.data == buttons.check_knowledge)
 def check_knowledge_function(call):
-    bot.send_message(call.from_user.id,
-                     'Пора проверить твои знания (в разработке)')
+    inform = 'Пора проверить твои знания (в разработке)'
+    bot.send_message(call.from_user.id, inform)
     buttons.LocalButtonsChecking(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
@@ -91,11 +89,10 @@ def translator_function(call):
 #  Запускает функцию Демонстрация главного меню
 @bot.callback_query_handler(
     func=lambda call: call.data == buttons.exit_to_main_menu)
-def add_word_function(call):
+def back_to_main_menu_function(call):
     bot.send_message(call.from_user.id, 'Чуи, мы дома')
     show_main_menu(call)
-    bot.answer_callback_query(callback_query_id=call.id,
-                              text='')
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Добавить", в режиме переводчика

@@ -2,6 +2,7 @@ from translate import Translator
 import telebot
 from settings import TG_TOKEN
 import buttons
+import bd
 
 bot = telebot.TeleBot(TG_TOKEN)
 
@@ -15,8 +16,7 @@ def get_translate(asci, text):
         translation = translator.translate(text)
         trans_and_lang.append(translation)
         trans_and_lang.append(text)
-        translation = translation.split('&')[
-            0]  # отсекаем мусор, который иногда появляется
+        translation = translation.split('&')[0]  # отсекаем мусор
     elif 122 >= asci >= 65:
         translator = Translator(from_lang='English', to_lang='Russian')
         translation = translator.translate(text)
