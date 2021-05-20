@@ -3,7 +3,7 @@ import telebot
 from settings import TG_TOKEN
 import trans_alg
 import buttons
-import bd
+# import bd
 import basic_functions
 
 ## создаем экземпляр бота
@@ -12,7 +12,7 @@ bot = telebot.TeleBot(TG_TOKEN)
 
 ## Демонстрация главного меню.
 #
-#  После зпуска бота, функция отправляет главное меню
+#  После запуска бота, функция отправляет главное меню
 @bot.message_handler(commands=['start'])
 def show_main_menu(message):
     buttons.main_menu(message)
@@ -27,6 +27,7 @@ def add_word_function(call):
     bot.send_message(call.from_user.id, inform)
     buttons.LocalButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
+    basic_functions.add_words(call)
 
 
 ## Обработка нажатия на кнопку "Учить слова"
@@ -51,16 +52,6 @@ def check_knowledge_function(call):
     inform = 'Пора проверить твои знания (в разработке)'
     bot.send_message(call.from_user.id, inform)
     buttons.LocalButtonsChecking(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id, text='')
-
-
-## Обработка нажатия на кнопку "Статистика"
-#
-#  Функция отправляет уведомление о переходе в режим "Статистика".
-#  Отправляет пользователю клавиатуру, для работы в режиме "Статистика"
-@bot.callback_query_handler(func=lambda call: call.data == buttons.statistic)
-def statistic_function(call):
-    bot.send_message(call.from_user.id, 'Вот твоя статистика: (в разработке)')
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
@@ -95,18 +86,16 @@ def back_to_main_menu_function(call):
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
+@bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
+def approve_button_func(call):
+    info = 'Ваше слово/предложение добавлено в словарь'
+    basic_functions.add_words(call)
+    bot.send_message(call.from_user.id, info)
+
+
 ## Обработка нажатия на кнопку "Добавить", в режиме переводчика
 #
 #  Отправляет пользователю клавиатуру для Выбора темы
-@bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
-def choose_theme_menu(call):
-    buttons.ThemeButtons(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id, text='')
-
-    @bot.callback_query_handler(func=lambda call: True)
-    def themes_function(call):
-        basic_functions.choose_your_theme(call)
-
 
 
 bot.polling(none_stop=True, interval=0)

@@ -79,19 +79,19 @@ cursor = db.cursor()
 # добавление одной строки в бд
 
 
-def add_to_db_from_translator(words, theme, user_id):
+def add_to_db_from_translator(words, user_id):
     eng_word = words[0]
     rus_word = words[1]
-    sql = "INSERT INTO words (eng_word, rus_word, theme, user_id) VALUES (%s, %s, %s, %s)"
-    val = (eng_word, rus_word, theme, user_id)
+    sql = "INSERT INTO words (eng_word, rus_word, user_id) VALUES (%s, %s, %s)"
+    val = (eng_word, rus_word, user_id)
     cursor.execute(sql, val)
     db.commit()
 
 
-def add_to_db(user_words, theme, user_id):
+def add_to_db(user_words, user_id):
     eng_word, rus_word = [i.strip() for i in user_words.split('.')]
-    sql = "INSERT INTO words (eng_word, rus_word, theme, user_id) VALUES (%s, %s, %s, %s)"
-    val = (eng_word, rus_word, theme, user_id)
+    sql = "INSERT INTO words (eng_word, rus_word, user_id) VALUES (%s, %s, %s)"
+    val = (eng_word, rus_word, user_id)
     cursor.execute(sql, val)
     db.commit()
 
@@ -114,12 +114,7 @@ def add_to_db(user_words, theme, user_id):
 # db.commit()
 # print('Запись удалена!')
 ######################################
-def themes_db(user_id):
-    query = "SELECT theme FROM words WHERE user_id=" + str(user_id)
-    cursor.execute(query)
-    result = cursor.fetchall()
-    list_of_themes = list(set([str(i).replace(r"('", '').replace(r"',)", '') for i in result]))
-    return list_of_themes
+
 
 
 
