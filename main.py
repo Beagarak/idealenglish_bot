@@ -93,9 +93,4 @@ def approve_button_func(call):
     bot.send_message(call.from_user.id, info)
 
 
-## Обработка нажатия на кнопку "Добавить", в режиме переводчика
-#
-#  Отправляет пользователю клавиатуру для Выбора темы
-
-
 bot.polling(none_stop=True, interval=0)
