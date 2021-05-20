@@ -64,7 +64,6 @@ class LocalButtonsChecking(LocalButtons):
         self.new_keyboard.add(self.exit_button)
 
 
-
 class ThemeButtons(LocalButtons):
     def __init__(self, call):
         super().__init__(call)
@@ -122,3 +121,12 @@ def main_menu(message):
     user_markup.add(statistic_button, translate_button)
     bot.send_message(message.from_user.id, 'Выберите действие',
                      reply_markup=user_markup)
+
+
+# def creating_theme_buttons(theme_value, theme_item, call):
+#     theme_keyboard = telebot.types.InlineKeyboardMarkup()
+#     theme_button = telebot.types.InlineKeyboardButton(text=theme_item,
+#                                                       callback_data=theme_value)
+#     bot = telebot.TeleBot(TG_TOKEN)
+#     theme_keyboard.add(theme_button)
+#     bot.send_message(call.from_user.id, '', reply_markup=theme_keyboard)

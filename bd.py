@@ -8,7 +8,6 @@ try:
         host=settings.bd_host,
         user=settings.bd_user,
         passwd=settings.bd_passwd,
-        port=settings.bd_port,
         database=settings.bd_database
     )
 except mysql.connector.Error as err:
@@ -23,6 +22,8 @@ except mysql.connector.Error as err:
         sys.exit()
 
 cursor = db.cursor()
+
+
 #####################################
 # показывает все созданные таблицы
 # cursor.execute("SHOW TABLES")
@@ -40,9 +41,11 @@ cursor = db.cursor()
 
 # sql = "INSERT INTO words (eng_word, rus_word, theme, user_id) VALUES (%s, %s, %s, %s)"
 # val = [
-#   ("apple", "яблоко", "fruits", 123456789),
-#   ("banana", "банан", "fruits", 123456788),
-#   ("cat", "кот", "animals", 123456787),
+#     ("apple", "яблоко", "fruits", 123456789),
+#     ("peach", "персик", "other fruits", 123456789),
+#     ("dog", "собака", "animals", 123456789),
+#     ("banana", "банан", "fruits", 123456788),
+#     ("cat", "кот", "animals", 123456787),
 # ]
 #
 # cursor.executemany(sql, val)
@@ -110,3 +113,13 @@ def add_to_db(user_words, theme, user_id):
 # cursor.execute(sql, val)
 # db.commit()
 # print('Запись удалена!')
+######################################
+def themes_db(user_id):
+    query = "SELECT theme FROM words WHERE user_id=" + str(user_id)
+    cursor.execute(query)
+    result = cursor.fetchall()
+    list_of_themes = list(set([str(i).replace(r"('", '').replace(r"',)", '') for i in result]))
+    return list_of_themes
+
+
+
