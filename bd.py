@@ -84,6 +84,15 @@ def add_to_db_from_translator(words, theme, user_id):
     cursor.execute(sql, val)
     db.commit()
 
+
+def add_to_db(user_words, theme, user_id):
+    eng_word, rus_word = [i.strip() for i in user_words.split('.')]
+    sql = "INSERT INTO words (eng_word, rus_word, theme, user_id) VALUES (%s, %s, %s, %s)"
+    val = (eng_word, rus_word, theme, user_id)
+    cursor.execute(sql, val)
+    db.commit()
+
+
 #####################################
 # удаление всех строк где есть слово "apple"
 

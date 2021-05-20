@@ -22,8 +22,8 @@ def show_main_menu(message):
 #
 #  Функция отправляет уведомление о переходе в режим "Добавить слова".
 @bot.callback_query_handler(func=lambda call: call.data == buttons.add_word)
-def add_word_function(call=buttons.add_word):
-    inform = 'Добавь слова в формате: Английское слово - Русский перевод'
+def add_word_function(call):
+    inform = 'Добавь слова в формате: Английское слово.Русский перевод'
     bot.send_message(call.from_user.id, inform)
     buttons.LocalButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
@@ -59,7 +59,7 @@ def check_knowledge_function(call):
 #  Функция отправляет уведомление о переходе в режим "Статистика".
 #  Отправляет пользователю клавиатуру, для работы в режиме "Статистика"
 @bot.callback_query_handler(func=lambda call: call.data == buttons.statistic)
-def statistic_function(call=buttons.translate):
+def statistic_function(call):
     bot.send_message(call.from_user.id, 'Вот твоя статистика: (в разработке)')
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
@@ -70,8 +70,8 @@ def statistic_function(call=buttons.translate):
 #  Запускает функцию Перевода в реальном времени
 @bot.callback_query_handler(func=lambda call: call.data == buttons.translate)
 def translator_function(call):
-    bot.send_message(call.from_user.id,
-                     'Введи слово, которое хочешь перевести:')
+    inform = 'Введи слово, которое хочешь перевести:'
+    bot.send_message(call.from_user.id, inform)
 
     ## Перевод в реальном времени
     #
