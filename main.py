@@ -97,9 +97,9 @@ def back_to_main_menu_function(call):
 
 
 
-<<<<<<< HEAD
+<<<<<<<<< Temporary merge branch 1
+=========
 
 
-=======
->>>>>>> 9907746e09e068ecf5d0672491a8d5126bba2926
+>>>>>>>>> Temporary merge branch 2
 bot.polling(none_stop=True, interval=0)
