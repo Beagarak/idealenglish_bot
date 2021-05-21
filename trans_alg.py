@@ -2,6 +2,7 @@ from translate import Translator
 import telebot
 from settings import TG_TOKEN
 import buttons
+
 # import bd
 
 bot = telebot.TeleBot(TG_TOKEN)
@@ -36,8 +37,9 @@ def translation_function(message):
     log_words = get_translate(type_of_lang, message.text)
     translation = log_words[2]
     log_words.pop(2)
+    log_words = str(log_words[0]) + '.' + str(log_words[1])
     bot.send_message(message.from_user.id, translation)
     bot.send_photo(chat_id=message.chat.id,
                    photo=get_picture(translation))
     buttons.LocalButtons(message).creating_keyboard(message)
-    # bd.add_to_db_from_translator(log_words)
+    # bd.add_to_db(log_words, message.from_user.id)
