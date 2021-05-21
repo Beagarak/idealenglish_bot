@@ -10,10 +10,7 @@ try:
         passwd=settings.bd_passwd,
         database=settings.bd_database
     )
-<<<<<<< HEAD
 
-=======
->>>>>>> 8cffff85d72f507515f2f96bb55b44cf420d7504
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
         print("Try again")
@@ -84,15 +81,11 @@ cursor = db.cursor()
 
 
 def add_to_db(user_words, user_id):
-<<<<<<< HEAD
-=======
     """
     :param user_words: Two-word list(1-eng, 2-rus)
     :param user_id: User_id in the tg
     :return: Adds words to the database
     """
-
->>>>>>> 8cffff85d72f507515f2f96bb55b44cf420d7504
     eng_word, rus_word = [i.strip() for i in user_words.split('.')]
     sql = "INSERT INTO words (eng_word, rus_word, user_id) VALUES (%s, %s, %s)"
     val = (eng_word, rus_word, user_id)
@@ -118,8 +111,7 @@ def add_to_db(user_words, user_id):
 # db.commit()
 # print('Запись удалена!')
 ######################################
-<<<<<<< HEAD
+
 
 # cursor.execute("CREATE DATABASE bot")
-=======
->>>>>>> 8cffff85d72f507515f2f96bb55b44cf420d7504
+

@@ -95,11 +95,4 @@ def back_to_main_menu_function(call):
 #     bot.send_message(call.from_user.id, info)
 
 
-
-
-<<<<<<<<< Temporary merge branch 1
-=========
-
-
->>>>>>>>> Temporary merge branch 2
 bot.polling(none_stop=True, interval=0)
