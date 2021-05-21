@@ -5,10 +5,11 @@ import trans_alg
 import buttons
 # import bd
 import basic_functions
+import help_information
 
 ## создаем экземпляр бота
 bot = telebot.TeleBot(TG_TOKEN)
-
+status = 0
 
 ## Демонстрация главного меню.
 #
@@ -17,6 +18,13 @@ bot = telebot.TeleBot(TG_TOKEN)
 def show_main_menu(message):
     buttons.main_menu(message)
 
+@bot.message_handler(commands=['help'])
+def launch_help(message):
+    help_information.help(message)
+
+    @bot.message_handler(content_types='text')
+    def show_help_commands(message):
+        help_information.help_commands(message)
 
 ## Обработка нажатия на кнопку "Добавить слова"
 #
