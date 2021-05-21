@@ -97,6 +97,9 @@ def back_to_main_menu_function(call):
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 9907746e09e068ecf5d0672491a8d5126bba2926
 bot.polling(none_stop=True, interval=0)
