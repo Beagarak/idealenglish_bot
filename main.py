@@ -25,6 +25,8 @@ def show_main_menu(message):
 def add_word_function(call):
     inform = 'Добавь слова в формате: Английское слово.Русский перевод'
     bot.send_message(call.from_user.id, inform)
+
+
     buttons.LocalButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
     basic_functions.add_words(call)
@@ -86,16 +88,15 @@ def back_to_main_menu_function(call):
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
-@bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
-def approve_button_func(call):
-    info = 'Ваше слово/предложение добавлено в словарь'
-    basic_functions.add_words(call)
-    bot.send_message(call.from_user.id, info)
+# @bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
+# def approve_button_func(call):
+#     info = 'Ваше слово/предложение добавлено в словарь'
+#     basic_functions.add_words(call)
+#     bot.send_message(call.from_user.id, info)
 
 
-## Обработка нажатия на кнопку "Добавить", в режиме переводчика
-#
-#  Отправляет пользователю клавиатуру для Выбора темы
+
+
 
 
 bot.polling(none_stop=True, interval=0)
