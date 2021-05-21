@@ -11,12 +11,14 @@ import help_information
 bot = telebot.TeleBot(TG_TOKEN)
 status = 0
 
+
 ## Демонстрация главного меню.
 #
 #  После запуска бота, функция отправляет главное меню
 @bot.message_handler(commands=['start'])
 def show_main_menu(message):
     buttons.main_menu(message)
+
 
 @bot.message_handler(commands=['help'])
 def launch_help(message):
@@ -26,6 +28,7 @@ def launch_help(message):
     def show_help_commands(message):
         help_information.help_commands(message)
 
+
 ## Обработка нажатия на кнопку "Добавить слова"
 #
 #  Функция отправляет уведомление о переходе в режим "Добавить слова".
@@ -33,7 +36,6 @@ def launch_help(message):
 def add_word_function(call):
     inform = 'Добавь слова в формате: Английское слово.Русский перевод'
     bot.send_message(call.from_user.id, inform)
-
 
     buttons.LocalButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')

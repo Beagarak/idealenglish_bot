@@ -1,7 +1,7 @@
 # import buttons
 import telebot
 from settings import TG_TOKEN
-# import bd
+import bd
 
 bot = telebot.TeleBot(TG_TOKEN)
 
