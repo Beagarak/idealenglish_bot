@@ -10,6 +10,7 @@ try:
         passwd=settings.bd_passwd,
         database=settings.bd_database
     )
+
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
         print("Try again")
@@ -106,6 +107,4 @@ def add_to_db(user_words, user_id):
 # print('Запись удалена!')
 ######################################
 
-
-
-
+# cursor.execute("CREATE DATABASE bot")
