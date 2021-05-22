@@ -158,16 +158,45 @@ def letters_eng_rus_button_func(call):
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.eng_next_word)
+def eng_next_word_button_func(call):
+    chek_of_knowledge.eng_rus_quiz(chek_of_knowledge.take_user_words(
+        call.from_user.id),
+        chek_of_knowledge.take_other_words(), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.back_to_games)
+def back_to_games_button_func(call):
+    buttons.LocalButtonsChecking(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.rus_next_word)
+def rus_next_word_button_func(call):
+    chek_of_knowledge.rus_eng_quiz(chek_of_knowledge.take_user_words(
+        call.from_user.id),
+        chek_of_knowledge.take_other_words(), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
 @bot.callback_query_handler(func=lambda call: True)
 def checking_answer(call):
     if call.data == chek_of_knowledge.eng_user_word:
         bot.send_message(call.from_user.id, chek_of_knowledge.eng_inform1)
+        buttons.InEngQuizButtons(call).creating_keyboard(call)
     if call.data == chek_of_knowledge.eng_random_word:
         bot.send_message(call.from_user.id, chek_of_knowledge.eng_inform2)
+        buttons.InEngQuizButtons(call).creating_keyboard(call)
     if call.data == chek_of_knowledge.rus_user_word:
         bot.send_message(call.from_user.id, chek_of_knowledge.rus_inform1)
+        buttons.InRusQuizButtons(call).creating_keyboard(call)
     if call.data == chek_of_knowledge.rus_random_word:
         bot.send_message(call.from_user.id, chek_of_knowledge.rus_inform2)
+        buttons.InRusQuizButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 

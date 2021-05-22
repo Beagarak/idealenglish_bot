@@ -137,6 +137,28 @@ class LettersGameButtons(LocalButtons):
         self.new_keyboard.add(self.letters_rus_eng_b, self.letters_eng_rus_b)
 
 
+class InEngQuizButtons(LocalButtons):
+    def __init__(self, call):
+        super().__init__(call)
+        self.eng_next_word_b = telebot.types.InlineKeyboardButton(
+            text=eng_next_word,
+            callback_data=eng_next_word)
+        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
+        self.new_keyboard.add(self.eng_next_word_b)
+        self.new_keyboard.add(self.back_to_menu_b)
+
+
+class InRusQuizButtons(LocalButtons):
+    def __init__(self, call):
+        super().__init__(call)
+        self.rus_next_word_b = telebot.types.InlineKeyboardButton(
+            text=rus_next_word,
+            callback_data=eng_next_word)
+        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
+        self.new_keyboard.add(self.rus_next_word_b)
+        self.new_keyboard.add(self.back_to_menu_b)
+
+
 ##Создаём названия и надписи для всех кнопок
 add_word = '|Добавить слова|'
 learn_words = '|Учить слова|'
