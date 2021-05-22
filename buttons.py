@@ -35,6 +35,9 @@ class LocalButtons:
         self.exit_b = telebot.types.InlineKeyboardButton(
             text=exit_to_main_menu,
             callback_data=exit_to_main_menu)
+        self.back_to_games_b = telebot.types.InlineKeyboardButton(
+            text=back_to_games,
+            callback_data=back_to_games)
         self.new_keyboard = telebot.types.InlineKeyboardMarkup()
         self.bot = telebot.TeleBot(TG_TOKEN)
         self.new_keyboard.add(self.approve_b)
@@ -51,11 +54,7 @@ class LocalButtons:
 class LocalButtonsLearning(LocalButtons):
     def __init__(self, call):
         super().__init__(call)
-        self.next_word_button = telebot.types.InlineKeyboardButton(
-            text=next_word,
-            callback_data=next_word)
         self.new_keyboard = telebot.types.InlineKeyboardMarkup()
-        self.new_keyboard.add(self.next_word_button)
         self.new_keyboard.add(self.exit_b)
 
 
@@ -137,6 +136,28 @@ class LettersGameButtons(LocalButtons):
         self.new_keyboard.add(self.letters_rus_eng_b, self.letters_eng_rus_b)
 
 
+class InEngQuizButtons(LocalButtons):
+    def __init__(self, call):
+        super().__init__(call)
+        self.eng_next_word_b = telebot.types.InlineKeyboardButton(
+            text=eng_next_word,
+            callback_data=eng_next_word)
+        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
+        self.new_keyboard.add(self.eng_next_word_b)
+        self.new_keyboard.add(self.back_to_games_b)
+
+
+class InRusQuizButtons(LocalButtons):
+    def __init__(self, call):
+        super().__init__(call)
+        self.rus_next_word_b = telebot.types.InlineKeyboardButton(
+            text=rus_next_word,
+            callback_data=eng_next_word)
+        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
+        self.new_keyboard.add(self.rus_next_word_b)
+        self.new_keyboard.add(self.back_to_games_b)
+
+
 ##Создаём названия и надписи для всех кнопок
 add_word = '|Добавить слова|'
 learn_words = '|Учить слова|'
@@ -144,7 +165,6 @@ check_knowledge = '|Проверка знаний|'
 translate = '|Переводчик|'
 approve = '|Добавить|'
 exit_to_main_menu = '|Выход в главное меню|'
-next_word = '|Следующее слово|'
 guess_translate = '|Верный ли перевод?|'
 quiz = '|Викторина|'
 eng_rus = '|Англ - рус|'
@@ -153,6 +173,9 @@ write_translate = '|Напиши перевод|'
 easy_translate = '|Угадай перевод по буквам|'
 letters_eng_rus = '|Англ-рус|'
 letters_rus_eng = '|Рус-англ|'
+eng_next_word = '|Следующее слово|'
+rus_next_word = '|Следующее слово |'
+back_to_games = 'Сменить игру'
 
 
 ##Создание и вывод клавиатуры для главного меню
