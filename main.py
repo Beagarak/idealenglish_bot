@@ -12,6 +12,7 @@ bot = telebot.TeleBot(TG_TOKEN)
 message_text = 'Hello'
 message_id = 0
 button_status = ''
+translate_data = ''
 
 
 ## Демонстрация главного меню.
@@ -30,15 +31,16 @@ def launch_help(message):
 @bot.message_handler(content_types='text')
 def get_words(message):
     help_information.help_commands(message)
-    global message_text, message_id, button_status
+    global message_text, message_id, button_status, translate_data
     message_text = message.text
     message_id = int(message.from_user.id)
     if button_status == 'add':
         buttons.LocalButtons(message).creating_keyboard(message)
     if button_status == 'trans':
         inform = 'Введи слово, которое хочешь перевести:'
-        trans_alg.translation_function(message_text, message_id)
         bot.send_message(message.from_user.id, inform)
+        translate_data = trans_alg.translation_function(message_text,
+                                                        message_id)
 
 
 ## Обработка нажатия на кнопку "Добавить слова"
@@ -105,11 +107,14 @@ def back_to_main_menu_function(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
 def approve_button_func(call):
-    bd.add_to_db(message_text, message_id)
+    global button_status, translate_data, first_in
+    if button_status == 'add':
+        bd.add_to_db(message_text, message_id)
+    if button_status == 'trans':
+        bd.add_to_db(translate_data, message_id)
     info = 'Ваше слово/предложение добавлено в словарь'
     bot.send_message(call.from_user.id, info)
     bot.answer_callback_query(callback_query_id=call.id, text='')
-    buttons.LocalButtons(call).creating_keyboard(call)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.quiz)
