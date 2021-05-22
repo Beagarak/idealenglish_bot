@@ -1,12 +1,9 @@
 import telebot
-
 from settings import TG_TOKEN
 import trans_alg
 import buttons
-import basic_functions
 import help_information
 import bd
-
 import chek_of_knowledge
 
 ## создаем экземпляр бота
@@ -109,7 +106,7 @@ def back_to_main_menu_function(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
 def approve_button_func(call):
-    basic_functions.add_words(message_text, message_id)
+    bd.add_to_db(message_text, message_id)
     info = 'Ваше слово/предложение добавлено в словарь'
     bot.send_message(call.from_user.id, info)
     bot.answer_callback_query(callback_query_id=call.id, text='')
