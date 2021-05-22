@@ -82,7 +82,6 @@ def rus_eng_quiz(list_of_words, random_words, call):
     buttons.RusQuizButtons(call).creating_keyboard(call)
 
 
-
 def mixer(word):
     letters = list(word)
     random.shuffle(letters)
