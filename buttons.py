@@ -9,35 +9,40 @@ bot = telebot.TeleBot(TG_TOKEN)
 ##Создание базовой клавиатуры с кнопками "Добавить", "Отказаться" и "Выход в главное меню"
 #
 # Функция является методом основного класса и создаёт любую клавиатуру, в данном случае базовую клавиатуру с вышеуказанными кнопками
+class TranslateButtons:
+    def __init__(self, user_id):
+        self.approve_b = telebot.types.InlineKeyboardButton(
+            text=approve,
+            callback_data=approve)
+        self.exit_b = telebot.types.InlineKeyboardButton(
+            text=exit_to_main_menu,
+            callback_data=exit_to_main_menu)
+        self.bot = telebot.TeleBot(TG_TOKEN)
+        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
+        self.new_keyboard.add(self.approve_b)
+        self.new_keyboard.add(self.exit_b)
+
+    def creating_translate_keyboard(self, user_id):
+        self.bot.send_message(user_id, text='Выберите',
+                              reply_markup=self.new_keyboard)
+
+
 class LocalButtons:
     def __init__(self, call):
+        self.approve_b = telebot.types.InlineKeyboardButton(
+            text=approve,
+            callback_data=approve)
         self.exit_b = telebot.types.InlineKeyboardButton(
             text=exit_to_main_menu,
             callback_data=exit_to_main_menu)
         self.new_keyboard = telebot.types.InlineKeyboardMarkup()
         self.bot = telebot.TeleBot(TG_TOKEN)
+        self.new_keyboard.add(self.approve_b)
         self.new_keyboard.add(self.exit_b)
 
     def creating_keyboard(self, call):
         self.bot.send_message(call.from_user.id, text='Выберите',
                               reply_markup=self.new_keyboard)
-
-
-##Создание клавиатуры для режима "Переводчик"
-#
-# В класс, наследуемый от основного, добавляются кнопки "Добавить" и "Отказаться"
-class LocalButtonsTranslate(LocalButtons):
-    def __init__(self, call):
-        super().__init__(call)
-        self.approve_b = telebot.types.InlineKeyboardButton(
-            text=approve,
-            callback_data=approve)
-        self.reject_b = telebot.types.InlineKeyboardButton(
-            text=reject,
-            callback_data=reject)
-        self.new_keyboard = telebot.types.InlineKeyboardMarkup()
-        self.new_keyboard.add(self.approve_b, self.reject_b)
-        self.new_keyboard.add(self.exit_b)
 
 
 ##Создание клавиатуры для режима "Учить слова"
@@ -138,7 +143,6 @@ learn_words = '|Учить слова|'
 check_knowledge = '|Проверка знаний|'
 translate = '|Переводчик|'
 approve = '|Добавить|'
-reject = '|Отказаться|'
 exit_to_main_menu = '|Выход в главное меню|'
 next_word = '|Следующее слово|'
 guess_translate = '|Верный ли перевод?|'

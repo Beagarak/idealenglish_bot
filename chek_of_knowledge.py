@@ -33,7 +33,6 @@ except mysql.connector.Error as err:
 cursor = db.cursor()
 
 
-# функции 2 и 3
 def take_user_words(user_id):
     query = "SELECT eng_word, rus_word FROM words WHERE user_id=" + str(
         user_id) + " " + "ORDER BY RAND() LIMIT 1"
@@ -83,17 +82,12 @@ def rus_eng_quiz(list_of_words, random_words, call):
     buttons.RusQuizButtons(call).creating_keyboard(call)
 
 
-#функция 4
-
 
 def mixer(word):
     letters = list(word)
     random.shuffle(letters)
     return letters
 
-
-# chek_of_knowledge.check_answer(chek_of_knowledge.take_user_words (call.from_user.id), call)
-# пример вывода функции
 
 def rus_eng_letters(list_of_words, call):
     trash = ' '.join(mixer(list_of_words[0]))
@@ -120,7 +114,6 @@ def eng_rus_letters(list_of_words, call):
         else:
             bot.send_message(message.from_user.id, 'К сожалению, неправильно')
 
-#check_answer(take_user_words(user__id))
 
 # функция 5
 # тут используется take_random_rus_word
