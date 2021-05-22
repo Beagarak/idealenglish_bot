@@ -41,21 +41,18 @@ def get_picture(text):
     return link
 
 
-def translation_function(user_word, user_id):
+def translation_function(message):
     """
     :param message: Word(or text) received from the user
     :return: Sends the translated word and picture to the user, and also adds the word to the database
     """
-    type_of_lang = int(ord(user_word[0]))
-    log_words = get_translate(type_of_lang, user_word)
+    type_of_lang = int(ord(message.text[0]))
+    log_words = get_translate(type_of_lang, message.text)
     translation = log_words[2]
     log_words.pop(2)
     log_words = str(log_words[0]) + '.' + str(log_words[1])
-    print(translation)
-    bot.send_message(user_id, translation)
-    bot.send_photo(chat_id=user_id,
+    bot.send_message(message.from_user.id, translation)
+    bot.send_photo(chat_id=message.chat.id,
                    photo=get_picture(translation))
-    print(log_words, user_id)
-    bd.add_to_db(log_words, user_id)
-    # buttons.LocalButtons(message).creating_keyboard(message)
-
+    buttons.LocalButtonsTranslate(message).creating_keyboard(message)
+    bd.add_to_db(log_words, message.from_user.id)

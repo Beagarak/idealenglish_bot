@@ -86,6 +86,8 @@ def coword(message):
 @bot.message_handler(content_types='text')
 def help_commands(message):
     command = message.text
+    # if command == '/help':
+    #     help(message)
     if command == '/translate':
         translate(message)
     if command == '/add':
@@ -102,4 +104,3 @@ def help_commands(message):
         wr_translate(message)
     if command == '/coword':
         coword(message)
-
