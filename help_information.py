@@ -102,4 +102,3 @@ def help_commands(message):
         wr_translate(message)
     if command == '/coword':
         coword(message)
-

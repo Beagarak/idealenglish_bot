@@ -6,8 +6,7 @@ import buttons
 import basic_functions
 import help_information
 
-# import chek_of_knowledge
-
+import chek_of_knowledge
 
 ## создаем экземпляр бота
 bot = telebot.TeleBot(TG_TOKEN)
@@ -15,6 +14,7 @@ bot = telebot.TeleBot(TG_TOKEN)
 message_text = 'Hello'
 message_id = 0
 button_status = ''
+
 
 ## Демонстрация главного меню.
 #
@@ -116,17 +116,65 @@ def approve_button_func(call):
     info = 'Ваше слово/предложение добавлено в словарь'
     bot.send_message(call.from_user.id, info)
     bot.answer_callback_query(callback_query_id=call.id, text='')
-
     buttons.LocalButtons(call).creating_keyboard(call)
 
-# @bot.callback_query_handler(func=lambda call: call.data == buttons.quiz)
-# def quiz_button_func(call):
-#     buttons.SecondGameButtons(call).creating_keyboard(call)
-#     bot.answer_callback_query(callback_query_id=call.id, text='')
+
+@bot.callback_query_handler(func=lambda call: call.data == buttons.quiz)
+def quiz_button_func(call):
+    buttons.QuizGameButtons(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
-# @bot.callback_query_handler(func=lambda call: call.data == buttons.eng_rus)
-# def eng_rus_button_func(call):
+@bot.callback_query_handler(func=lambda call: call.data == buttons.eng_rus)
+def eng_rus_button_func(call):
+    chek_of_knowledge.eng_rus_quiz(chek_of_knowledge.take_user_words(
+        call.from_user.id),
+        chek_of_knowledge.take_other_words(), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(func=lambda call: call.data == buttons.rus_eng)
+def rus_eng_button_func(call):
+    chek_of_knowledge.rus_eng_quiz(chek_of_knowledge.take_user_words(
+        call.from_user.id),
+        chek_of_knowledge.take_other_words(), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.easy_translate)
+def easy_translate_button_func(call):
+    buttons.LettersGameButtons(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.letters_rus_eng)
+def letters_rus_eng_button_func(call):
+    chek_of_knowledge.rus_eng_letters(
+        chek_of_knowledge.take_user_words(call.from_user.id), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.letters_eng_rus)
+def letters_eng_rus_button_func(call):
+    chek_of_knowledge.eng_rus_letters(
+        chek_of_knowledge.take_user_words(call.from_user.id), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def checking_answer(call):
+    if call.data == chek_of_knowledge.eng_user_word:
+        bot.send_message(call.from_user.id, chek_of_knowledge.eng_inform1)
+    if call.data == chek_of_knowledge.eng_random_word:
+        bot.send_message(call.from_user.id, chek_of_knowledge.eng_inform2)
+    if call.data == chek_of_knowledge.rus_user_word:
+        bot.send_message(call.from_user.id, chek_of_knowledge.rus_inform1)
+    if call.data == chek_of_knowledge.rus_random_word:
+        bot.send_message(call.from_user.id, chek_of_knowledge.rus_inform2)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 bot.polling(none_stop=True, interval=0)

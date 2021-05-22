@@ -51,11 +51,8 @@ def translation_function(user_word, user_id):
     translation = log_words[2]
     log_words.pop(2)
     log_words = str(log_words[0]) + '.' + str(log_words[1])
-    print(translation)
     bot.send_message(user_id, translation)
     bot.send_photo(chat_id=user_id,
                    photo=get_picture(translation))
-    print(log_words, user_id)
     bd.add_to_db(log_words, user_id)
-    # buttons.LocalButtons(message).creating_keyboard(message)
-
+    buttons.TranslateButtons(user_id).creating_translate_keyboard(user_id)
