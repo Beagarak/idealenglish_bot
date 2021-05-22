@@ -1,55 +1,10 @@
 import random
-import mysql.connector
-from mysql.connector import errorcode
-import sys
-
 import buttons
-import settings
 from settings import TG_TOKEN
 import telebot
 
 bot = telebot.TeleBot(TG_TOKEN)
 user__id = 739414278
-
-try:
-    db = mysql.connector.connect(
-        host=settings.bd_host,
-        user=settings.bd_user,
-        passwd=settings.bd_passwd,
-        database=settings.bd_database
-    )
-
-except mysql.connector.Error as err:
-    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print("Try again")
-        sys.exit()
-    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("Database does not exist")
-        sys.exit()
-    else:
-        print(err)
-        sys.exit()
-
-cursor = db.cursor()
-
-
-def take_user_words(user_id):
-    query = "SELECT eng_word, rus_word FROM words WHERE user_id=" + str(
-        user_id) + " " + "ORDER BY RAND() LIMIT 1"
-    cursor.execute(query)
-    trash = cursor.fetchall()
-    list_of_words = [trash[0][0], trash[0][1]]
-    return list_of_words
-
-
-def take_other_words():
-    query = "SELECT eng_word, rus_word FROM words ORDER BY RAND() LIMIT 1"
-    cursor.execute(query)
-    trash = cursor.fetchall()
-    random_words = [trash[0][0], trash[0][1]]
-    return random_words
-
-
 eng_user_word = ''
 eng_random_word = ''
 eng_inform1 = ''

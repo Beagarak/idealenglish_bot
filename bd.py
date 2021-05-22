@@ -36,3 +36,20 @@ def add_to_db(user_words, user_id):
     val = (eng_word, rus_word, user_id)
     cursor.execute(sql, val)
     db.commit()
+
+
+def take_user_words(user_id):
+    query = "SELECT eng_word, rus_word FROM words WHERE user_id=" + str(
+        user_id) + " " + "ORDER BY RAND() LIMIT 1"
+    cursor.execute(query)
+    trash = cursor.fetchall()
+    list_of_words = [trash[0][0], trash[0][1]]
+    return list_of_words
+
+
+def take_other_words():
+    query = "SELECT eng_word, rus_word FROM words ORDER BY RAND() LIMIT 1"
+    cursor.execute(query)
+    trash = cursor.fetchall()
+    random_words = [trash[0][0], trash[0][1]]
+    return random_words
