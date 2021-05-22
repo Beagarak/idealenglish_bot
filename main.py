@@ -3,13 +3,15 @@ import telebot
 from settings import TG_TOKEN
 import trans_alg
 import buttons
-# import bd
 import basic_functions
 import help_information
 
+# import chek_of_knowledge
+
+
 ## создаем экземпляр бота
 bot = telebot.TeleBot(TG_TOKEN)
-status = 0
+add_message = ''
 
 
 ## Демонстрация главного меню.
@@ -24,9 +26,9 @@ def show_main_menu(message):
 def launch_help(message):
     help_information.help(message)
 
-    @bot.message_handler(content_types='text')
-    def show_help_commands(message):
-        help_information.help_commands(message)
+@bot.message_handler(content_types='text')
+def show_help_commands(message):
+    help_information.help_commands(message)
 
 
 ## Обработка нажатия на кнопку "Добавить слова"
@@ -34,12 +36,17 @@ def launch_help(message):
 #  Функция отправляет уведомление о переходе в режим "Добавить слова".
 @bot.callback_query_handler(func=lambda call: call.data == buttons.add_word)
 def add_word_function(call):
+    bot.answer_callback_query(callback_query_id=call.id, text='')
     inform = 'Добавь слова в формате: Английское слово.Русский перевод'
     bot.send_message(call.from_user.id, inform)
 
-    buttons.LocalButtons(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id, text='')
-    basic_functions.add_words(call)
+    @bot.message_handler(content_types=['text'])
+    def get_word(message):
+        basic_functions.add_words(message)
+        buttons.LocalButtons(message).creating_keyboard(message)
+
+
+
 
 
 ## Обработка нажатия на кнопку "Учить слова"
@@ -73,6 +80,7 @@ def check_knowledge_function(call):
 #  Запускает функцию Перевода в реальном времени
 @bot.callback_query_handler(func=lambda call: call.data == buttons.translate)
 def translator_function(call):
+    bot.answer_callback_query(callback_query_id=call.id, text='')
     inform = 'Введи слово, которое хочешь перевести:'
     bot.send_message(call.from_user.id, inform)
 
@@ -83,8 +91,6 @@ def translator_function(call):
     @bot.message_handler(content_types=['text'])
     def translate_in_realtime(message):
         trans_alg.translation_function(message)
-
-    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 ## Обработка нажатия на кнопку "Выход в главное меню"
@@ -98,11 +104,24 @@ def back_to_main_menu_function(call):
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
-# @bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
-# def approve_button_func(call):
-#     info = 'Ваше слово/предложение добавлено в словарь'
-#     basic_functions.add_words(call)
-#     bot.send_message(call.from_user.id, info)
+@bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
+def approve_button_func(call):
+    # basic_functions.add_words(add_message)
+    info = 'Ваше слово/предложение добавлено в словарь'
+    bot.send_message(call.from_user.id, info)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+# @bot.callback_query_handler(func=lambda call: call.data == buttons.quiz)
+# def quiz_button_func(call):
+#     buttons.SecondGameButtons(call).creating_keyboard(call)
+#     bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+# @bot.callback_query_handler(func=lambda call: call.data == buttons.eng_rus)
+# def eng_rus_button_func(call):
+
+
 
 
 bot.polling(none_stop=True, interval=0)
