@@ -2,7 +2,6 @@ from translate import Translator
 import telebot
 from settings import TG_TOKEN
 import buttons
-import bd
 
 bot = telebot.TeleBot(TG_TOKEN)
 

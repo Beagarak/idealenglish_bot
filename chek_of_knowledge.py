@@ -47,57 +47,50 @@ def rus_eng_letters(list_of_words, call):
     trash = ' '.join(mixer(list_of_words[0]))
     inform = 'Соберите слово: ' + list_of_words[1] + ' из букв:' + '\n' + trash
     bot.send_message(call.from_user.id, inform)
+    return list_of_words
 
-    @bot.message_handler(content_types=['text'])
-    def rus_eng_check_answer(message):
-        if list_of_words[0].lower() == message.text:
-            bot.send_message(message.from_user.id, 'Правильно!')
-        else:
-            bot.send_message(message.from_user.id, 'К сожалению, неправильно')
+
+def rus_eng_check_answer(user_ans, user_id, list_of_words, message):
+    if list_of_words[0].lower() == user_ans.lower():
+        bot.send_message(user_id, 'Правильно!')
+    else:
+        bot.send_message(user_id,
+                         'Вы ошиблись, правильный перевод: ' + list_of_words[0])
+    buttons.InGameButtons(message).creating_keyboard(message)
 
 
 def eng_rus_letters(list_of_words, call):
     trash = ' '.join(mixer(list_of_words[1]))
     inform = 'Соберите слово: ' + list_of_words[0] + ' из букв:' + '\n' + trash
     bot.send_message(call.from_user.id, inform)
-
-    @bot.message_handler(content_types=['text'])
-    def eng_rus_check_answer(message):
-        if list_of_words[1].lower() == message.text:
-            bot.send_message(message.from_user.id, 'Правильно!')
-        else:
-            bot.send_message(message.from_user.id, 'К сожалению, неправильно')
+    return list_of_words
 
 
-# функция 5
-# тут используется take_random_rus_word
-#
-#
-# def game_5(list_of_words):
-#     print('Выберите режим:')
-#     x = input()
-#     mode = 0
-#     if x == 'РА':
-#         mode = 2
-#     elif x == 'АР':
-#         mode = 1
-#
-#     if mode == 1:
-#         print(list_of_words[0], 'Укажите перевод:', sep='\n')
-#         y = input()
-#         if list_of_words[1].lower() == y.lower():
-#             print('Супер')
-#         else:
-#             print('Вы ошиблись, правильный перевод', list_of_words[1])
-#     elif mode == 2:
-#         print(list_of_words[1], 'Укажите перевод:', sep='\n')
-#         y = input()
-#         if list_of_words[0].lower() == y.lower():
-#             print('Супер')
-#         else:
-#             print('Вы ошиблись, правильный перевод', list_of_words[0])
-#     else:
-#         print('Неверный режим')
-#
-#
-# game_5(take_random_rus_word(user_id))
+def eng_rus_check_answer(user_ans, user_id, list_of_words, message):
+    if list_of_words[1].lower() == user_ans.lower():
+        bot.send_message(user_id, 'Правильно!')
+    else:
+        bot.send_message(user_id,
+                         'Вы ошиблись, правильный перевод: ' + list_of_words[1])
+    buttons.InGameButtons(message).creating_keyboard(message)
+
+
+def eng_write_translate(list_of_words, call):
+    # Отправляем слово английском
+    inform = 'Впишите верный перевод слова: ' + '\n' + list_of_words[0]
+    bot.send_message(call.from_user.id, inform)
+    return list_of_words
+
+
+def rus_write_translate(list_of_words, call):
+    # Отправляем слово английском
+    inform = 'Впишите верный перевод слова: ' + '\n' + list_of_words[1]
+    bot.send_message(call.from_user.id, inform)
+    return list_of_words
+
+
+# Вызов функции для мейна
+# chek_of_knowledge.eng_write_translate(chek_of_knowledge.take_user_words(
+#                                                     call.from_user.id), call)
+
+

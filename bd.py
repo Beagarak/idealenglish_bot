@@ -53,3 +53,14 @@ def take_other_words():
     trash = cursor.fetchall()
     random_words = [trash[0][0], trash[0][1]]
     return random_words
+
+
+def words_to_learn(user_id):
+    query = "SELECT eng_word, rus_word FROM words WHERE user_id=" + str(
+        user_id) + " " + "ORDER BY RAND() LIMIT 5"
+    cursor.execute(query)
+    trash = cursor.fetchall()
+    result = ''
+    for a, b in trash:
+        result += '{} - {}\n'.format(a, b)
+    return result
