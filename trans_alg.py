@@ -2,12 +2,17 @@ from translate import Translator
 import telebot
 from settings import TG_TOKEN
 import buttons
-import bd
 
 bot = telebot.TeleBot(TG_TOKEN)
 
 
 def get_translate(asci, text):
+    """
+    :param asci: Ascii code of the first character of the text that we must to translate
+    :param text: The first character of the word(or text) that we must to translate
+    :return: a list of words of length 3, where first is english,
+    second word is russian and third is translated word(or text).
+    """
     trans_and_lang = []
     trans_and_lang.clear()
     translation = ''
@@ -27,19 +32,26 @@ def get_translate(asci, text):
 
 
 def get_picture(text):
+    """
+    :param text: The first character of the word(or text) that we must to translate
+    :return: A picture that shows our word for translation
+    """
     link = 'https://yandex.ru/images/search?text=' + text.lower() + '%20'
     return link
 
 
-def translation_function(message):
-    type_of_lang = int(ord(message.text[0]))
-    log_words = get_translate(type_of_lang, message.text)
+def translation_function(user_word, user_id):
+    """
+    :param message: Word(or text) received from the user
+    :return: Sends the translated word and picture to the user, and also adds the word to the database
+    """
+    type_of_lang = int(ord(user_word[0]))
+    log_words = get_translate(type_of_lang, user_word)
     translation = log_words[2]
     log_words.pop(2)
-    bot.send_message(message.from_user.id, translation)
-    bot.send_photo(chat_id=message.chat.id,
+    log_words = str(log_words[0]) + '.' + str(log_words[1])
+    bot.send_message(user_id, translation)
+    bot.send_photo(chat_id=user_id,
                    photo=get_picture(translation))
-    buttons.LocalButtons(message).creating_keyboard(message)
-    log_user_id = message.chat.id
-    log_theme = "default"
-    bd.add_to_db_from_translator(log_words, log_theme, log_user_id)
+    buttons.TranslateButtons(user_id).creating_translate_keyboard(user_id)
+    return log_words
