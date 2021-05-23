@@ -48,8 +48,13 @@ def get_words(message):
                                                re_letters, message)
     if button_status == 'mix_eng_rus':
         chek_of_knowledge.eng_rus_check_answer(message_text, message_id,
+                                               er_letters, message)
+    if button_status == 'write_rus_eng':
+        chek_of_knowledge.rus_eng_check_answer(message_text, message_id,
                                                re_letters, message)
-
+    if button_status == 'write_eng_rus':
+        chek_of_knowledge.eng_rus_check_answer(message_text, message_id,
+                                               er_letters, message)
 
 ## Обработка нажатия на кнопку "Добавить слова"
 #
@@ -137,60 +142,57 @@ def other_words_button_func(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == buttons.quiz)
 def quiz_button_func(call):
+    global button_status
+    button_status = 'quiz'
     buttons.QuizGameButtons(call).creating_keyboard(call)
-    bot.answer_callback_query(callback_query_id=call.id, text='')
-
-
-@bot.callback_query_handler(func=lambda call: call.data == buttons.eng_rus)
-def eng_rus_button_func(call):
-    global button_status
-    button_status = 'quiz_eng_rus'
-    chek_of_knowledge.eng_rus_quiz(bd.take_user_words(
-        call.from_user.id),
-        bd.take_other_words(), call)
-    bot.answer_callback_query(callback_query_id=call.id, text='')
-
-
-@bot.callback_query_handler(func=lambda call: call.data == buttons.rus_eng)
-def rus_eng_button_func(call):
-    global button_status
-    button_status = 'quiz_rus_eng'
-    chek_of_knowledge.rus_eng_quiz(bd.take_user_words(
-        call.from_user.id),
-        bd.take_other_words(), call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 @bot.callback_query_handler(
     func=lambda call: call.data == buttons.easy_translate)
 def easy_translate_button_func(call):
+    global button_status
+    button_status = 'easy_translate'
     buttons.QuizGameButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
-@bot.callback_query_handler(
-    func=lambda call: call.data == buttons.rus_eng)
-def letters_rus_eng_button_func(call):
-    global button_status, re_letters
-    button_status = 'mix_rus_eng'
-    re_letters = chek_of_knowledge.rus_eng_letters(
-        bd.take_user_words(call.from_user.id), call)
-    bot.answer_callback_query(callback_query_id=call.id, text='')
-
-
-@bot.callback_query_handler(
-    func=lambda call: call.data == buttons.eng_rus)
-def letters_eng_rus_button_func(call):
+@bot.callback_query_handler(func=lambda call: call.data == buttons.eng_rus)
+def eng_rus_button_func(call):
     global button_status, er_letters
-    button_status = 'mix_eng_rus'
-    er_letters = chek_of_knowledge.eng_rus_letters(
-        bd.take_user_words(call.from_user.id), call)
+    if button_status == 'quiz':
+        button_status = 'quiz_eng_rus'
+        chek_of_knowledge.eng_rus_quiz(bd.take_user_words(
+            call.from_user.id),
+            bd.take_other_words(), call)
+    if button_status == 'easy_translate':
+        button_status = 'mix_eng_rus'
+        er_letters = chek_of_knowledge.eng_rus_letters(
+            bd.take_user_words(call.from_user.id), call)
+    if button_status == 'write_translate':
+        button_status = 'write_eng_rus'
+        er_letters = chek_of_knowledge.eng_write_translate(bd.take_user_words(
+            call.from_user.id), call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
-# @bot.callback_query_handler(
-#     func=lambda call: call.data == buttons.eng_rus)
-# def write_translate(call):
+@bot.callback_query_handler(func=lambda call: call.data == buttons.rus_eng)
+def rus_eng_button_func(call):
+    global button_status, re_letters
+    if button_status == 'quiz':
+        button_status = 'quiz_rus_eng'
+        chek_of_knowledge.rus_eng_quiz(bd.take_user_words(
+            call.from_user.id),
+            bd.take_other_words(), call)
+    if button_status == 'easy_translate':
+        button_status = 'mix_rus_eng'
+        re_letters = chek_of_knowledge.rus_eng_letters(
+            bd.take_user_words(call.from_user.id), call)
+    if button_status == 'write_translate':
+        button_status = 'write_rus_eng'
+        re_letters = chek_of_knowledge.rus_write_translate(bd.take_user_words(
+            call.from_user.id), call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
 @bot.callback_query_handler(
@@ -211,6 +213,12 @@ def next_word_button_func(call):
     if button_status == 'mix_eng_rus':
         er_letters = chek_of_knowledge.eng_rus_letters(
             bd.take_user_words(call.from_user.id), call)
+    if button_status == 'write_eng_rus':
+        er_letters = chek_of_knowledge.eng_write_translate(bd.take_user_words(
+            call.from_user.id), call)
+    if button_status == 'write_rus_eng':
+        re_letters = chek_of_knowledge.rus_write_translate(bd.take_user_words(
+            call.from_user.id), call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 
@@ -218,6 +226,15 @@ def next_word_button_func(call):
     func=lambda call: call.data == buttons.back_to_games)
 def back_to_games_button_func(call):
     buttons.LocalButtonsChecking(call).creating_keyboard(call)
+    bot.answer_callback_query(callback_query_id=call.id, text='')
+
+
+@bot.callback_query_handler(
+    func=lambda call: call.data == buttons.write_translate)
+def write_translate_button_func(call):
+    global button_status
+    button_status = 'write_translate'
+    buttons.QuizGameButtons(call).creating_keyboard(call)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 

@@ -79,12 +79,15 @@ def eng_write_translate(list_of_words, call):
     # Отправляем слово английском
     inform = 'Впишите верный перевод слова: ' + '\n' + list_of_words[0]
     bot.send_message(call.from_user.id, inform)
+    return list_of_words
 
 
 def rus_write_translate(list_of_words, call):
     # Отправляем слово английском
     inform = 'Впишите верный перевод слова: ' + '\n' + list_of_words[1]
     bot.send_message(call.from_user.id, inform)
+    return list_of_words
+
 
 # Вызов функции для мейна
 # chek_of_knowledge.eng_write_translate(chek_of_knowledge.take_user_words(
