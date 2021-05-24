@@ -1,7 +1,15 @@
+## Функции взаимодействия с базой данных
+#
+# Реализует соединение с базой данных и обращение к ней
+# @file bd.py
+# @author Титова Екатерина
+
 import mysql.connector
 from mysql.connector import errorcode
 import sys
 import settings
+
+## Подключаемся к базе данных
 
 try:
     db = mysql.connector.connect(
@@ -10,6 +18,8 @@ try:
         passwd=settings.bd_passwd,
         database=settings.bd_database
     )
+
+## Обработка ошибок при подключении
 
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -25,12 +35,11 @@ except mysql.connector.Error as err:
 cursor = db.cursor()
 
 
+## Функция добавления слов в базу данных
+# @param user_words: Список из двух слов (1-английское, 2-русское)
+# @param user_id: Id пользователя в телеграм
+# @return Добавляет слова в безу данных
 def add_to_db(user_words, user_id):
-    """
-    :param user_words: Two-word list(1-eng, 2-rus)
-    :param user_id: User_id in the tg
-    :return: Adds words to the database
-    """
     eng_word, rus_word = [i.strip() for i in user_words.split('.')]
     sql = "INSERT INTO words (eng_word, rus_word, user_id) VALUES (%s, %s, %s)"
     val = (eng_word.lower(), rus_word.lower(), user_id)
@@ -38,6 +47,9 @@ def add_to_db(user_words, user_id):
     db.commit()
 
 
+## Функция получения из базы данных случайной пары слово-перевод по id
+# @param user_id: Id пользователя в телеграм
+# @return Список из двух слов (1-английское, 2-русское)
 def take_user_words(user_id):
     query = "SELECT eng_word, rus_word FROM words WHERE user_id=" + str(
         user_id) + " " + "ORDER BY RAND() LIMIT 1"
@@ -47,6 +59,8 @@ def take_user_words(user_id):
     return list_of_words
 
 
+## Функция получения из базы данных случайной пары слово-перевод из всей таблицы
+# @return Список из двух слов (1-английское, 2-русское)
 def take_other_words():
     query = "SELECT eng_word, rus_word FROM words ORDER BY RAND() LIMIT 1"
     cursor.execute(query)
@@ -55,6 +69,9 @@ def take_other_words():
     return random_words
 
 
+## Функция получения из базы данных случайной 5 пар слово-перевод по id
+# @param user_id: Id пользователя в телеграм
+# @return 5 строк формата (английское слово - русский перевод)
 def words_to_learn(user_id):
     query = "SELECT eng_word, rus_word FROM words WHERE user_id=" + str(
         user_id) + " " + "ORDER BY RAND() LIMIT 5"
