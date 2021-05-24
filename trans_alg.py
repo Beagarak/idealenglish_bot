@@ -39,6 +39,10 @@ def get_translate(asci, text):
 # @param text Слово(или текст) полученное от пользователя
 # @return Возвращает ссылку на картинку
 def get_picture(text):
+    """
+    :param text: Слово(или текст), который мы должны перевести
+    :return: Картинка, которая показывает, что означет слово
+    """
     link = 'https://yandex.ru/images/search?text=' + text.lower() + '%20'
     return link
 
