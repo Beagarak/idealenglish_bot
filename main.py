@@ -123,14 +123,14 @@ def back_to_main_menu_function(call):
 @bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
 def approve_button_func(call):
     global button_status, translate_data
+    info = 'Ваше слово/предложение добавлено в словарь'
+    inform = 'Введи слово, которое хочешь перевести:'
     if button_status == 'add':
         bd.add_to_db(message_text, message_id)
+        bot.send_message(call.from_user.id, info)
     if button_status == 'trans':
         bd.add_to_db(translate_data, message_id)
-    info = 'Ваше слово/предложение добавлено в словарь'
-    bot.send_message(call.from_user.id, info)
-    inform = 'Введи слово, которое хочешь перевести:'
-    bot.send_message(call.from_user.id, inform)
+        bot.send_message(call.from_user.id, inform)
     bot.answer_callback_query(callback_query_id=call.id, text='')
 
 

@@ -33,7 +33,7 @@ def add_to_db(user_words, user_id):
     """
     eng_word, rus_word = [i.strip() for i in user_words.split('.')]
     sql = "INSERT INTO words (eng_word, rus_word, user_id) VALUES (%s, %s, %s)"
-    val = (eng_word, rus_word, user_id)
+    val = (eng_word.lower(), rus_word.lower(), user_id)
     cursor.execute(sql, val)
     db.commit()
 
