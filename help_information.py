@@ -1,9 +1,19 @@
+## Информация для команды "/help"
+#
+#  Содержит описание основных функций бота , которые может получить пользователь
+#  @file help_information.py
+#  @author Пеева Софья, Карагаев Валерий
+
 import telebot
 from settings import TG_TOKEN
 
+## Cоздаем экземпляр бота
 bot = telebot.TeleBot(TG_TOKEN)
 
 
+## Сообщение для команды "/help"
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['help'])
 def help(message):
     inform = '''
@@ -27,6 +37,9 @@ def help(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/translate" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['translate'])
 def translate(message):
     inform = '''Отправьте в чат бота сообщение с необходимым для перевода 
@@ -34,6 +47,9 @@ def translate(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/add" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['add'])
 def add(message):
     inform = '''В чат бота отправьте сообщение 'слово'.'перевод слова' и укажите
@@ -41,6 +57,9 @@ def add(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/learn" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['learn'])
 def learn(message):
     inform = '''Выберете тему слов, планируемых для изучения, и их 
@@ -48,6 +67,9 @@ def learn(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/guess" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['guess'])
 def guess(message):
     inform = '''У вас появится связка 'слово-перевод' и 2 кнопки: Верно и 
@@ -55,6 +77,9 @@ def guess(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/guess_rus" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['guess_rus'])
 def guess_rus(message):
     inform = '''Бот выдаст слово на английском языке и 3 варианта
@@ -62,6 +87,9 @@ def guess_rus(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/guess_eng" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['guess_eng'])
 def guess_eng(message):
     inform = '''Бот выдаст слово на русском языке и 3 варианта перевода
@@ -69,6 +97,9 @@ def guess_eng(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/wr_translate" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['wr_translate'])
 def wr_translate(message):
     inform = '''Бот выдаст слово на английском языке, необходимо
@@ -76,6 +107,9 @@ def wr_translate(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Сообщение для команды "/coword" в меню помощи
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(commands=['coword'])
 def coword(message):
     inform = '''Бот выдаст слово на русском языке, необходимо из набора
@@ -83,6 +117,9 @@ def coword(message):
     bot.send_message(message.from_user.id, inform)
 
 
+## Обработчик команд в режиме помощь
+#
+#  @param [in] message Сообщение от пользователя.
 @bot.message_handler(content_types='text')
 def help_commands(message):
     command = message.text
