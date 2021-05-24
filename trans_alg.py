@@ -8,10 +8,9 @@ bot = telebot.TeleBot(TG_TOKEN)
 
 def get_translate(asci, text):
     """
-    :param asci: Ascii code of the first character of the text that we must to translate
-    :param text: The first character of the word(or text) that we must to translate
-    :return: a list of words of length 3, where first is english,
-    second word is russian and third is translated word(or text).
+    :param asci: Аски код первого символа текста, который мы должны перевести
+    :param text: Слово(или текст), который мы должны перевести
+    :return: Список слов длинной 3, где первое слово - англ., второе - русс., третье - переведенное слово
     """
     trans_and_lang = []
     trans_and_lang.clear()
@@ -33,8 +32,8 @@ def get_translate(asci, text):
 
 def get_picture(text):
     """
-    :param text: The first character of the word(or text) that we must to translate
-    :return: A picture that shows our word for translation
+    :param text: Слово(или текст), который мы должны перевести
+    :return: Картинка, которая показывает, что означет слово
     """
     link = 'https://yandex.ru/images/search?text=' + text.lower() + '%20'
     return link
@@ -42,8 +41,9 @@ def get_picture(text):
 
 def translation_function(user_word, user_id):
     """
-    :param message: Word(or text) received from the user
-    :return: Sends the translated word and picture to the user, and also adds the word to the database
+    :param user_word: Слово(или текст) полученное от пользователя
+    :param user_id: адрес пользователя, на который посылаем сообщение
+    :return: Отправляет переведенное слово и картинку пользователю
     """
     type_of_lang = int(ord(user_word[0]))
     log_words = get_translate(type_of_lang, user_word)
