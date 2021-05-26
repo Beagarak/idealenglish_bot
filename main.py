@@ -159,20 +159,27 @@ def back_to_main_menu_function(call):
 
 ## Обработка нажатия на кнопку "Добавить"
 #
-#  Добавляет слово, которе ввел пользователь, в базу данных
+#  Добавляет слово, которе ввел пользователь, в базу данных или отвергает
 #  @param [in] call Данные с кнопки, которую нажал пользователь.
 @bot.callback_query_handler(func=lambda call: call.data == buttons.approve)
 def approve_button_func(call):
     global button_status, translate_data
     info = 'Ваше слово/предложение добавлено в словарь'
     inform = 'Введи слово, которое хочешь перевести:'
-    err = 'Ваше слово не добавлено в словарь. Проверьте правильность ввода: "Eng.рус"'
+    err1 = 'Ваше слово не добавлено в словарь. Проверьте правильность ввода: "Eng.рус"'
+    err2 = 'Слово уже находится в базе данных'
     if button_status == 'add':
+        # Проверка
         if errors.word_order(message_text):
-            bd.add_to_db(message_text, message_id)
-            bot.send_message(call.from_user.id, info)
+            # Если слова нет в бд
+            if bd.count_if_exists(call.from_user.id, errors.change_word(message_text)) == 0:
+                bd.add_to_db(message_text, message_id)
+                bot.send_message(call.from_user.id, info)
+            # Если есть
+            else:
+                bot.send_message(call.from_user.id, err2)
         else:
-            bot.send_message(call.from_user.id, err)
+            bot.send_message(call.from_user.id, err1)
     if button_status == 'trans':
         bd.add_to_db(translate_data, message_id)
         bot.send_message(call.from_user.id, inform)

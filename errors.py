@@ -17,3 +17,14 @@ def word_order(text):
         return 0
     else:
         return 1
+
+
+## Функция отсекания слова и преобразование его в нижний регистр
+#
+#  Берет английскую часть строки и преобразует в нижний регистр
+#  @param text Пара слов введенная пользователем
+#  @return Добавляет слова в безу данных
+def change_word(text):
+    text = text.partition('.')[0]
+    small = text.lower().replace(" ", "")
+    return small
